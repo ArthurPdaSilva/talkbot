@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+
+#root, html, body{
+    height: 100%;
+}
+
+.app{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #320E3B;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.app h1{
+    font-family: 'Roboto', sans-serif;
+    font-size: 48px;
+    color: #F2F4F3;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    height: 450px;
+    width: 1042px;
+    background-color: #F2F4F3;
+    border: 6px solid #4C2A85;
+    border-radius: 10px;
+}
+
+.conversation{
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    padding: 10px;
+    background-color: #F2F4F3;
+    height: 85%;
+}
+
+.talk{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.talk label{
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #4C2A85;
+    font-size: 20px;
+    color: #F2F4F3;
+}
+
+.talkUser{
+    justify-content: flex-end;    
+}
+
+.sendInformation{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    height: 70px;
+    width: 100%;
+    background: #4C2A85;
+}
+
+.sendInformation input{
+    width: 832px;
+    height: 35px;
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    background: #F2F4F3;
+    border-radius: 10px;
+}
+
+.sendInformation button{
+    color: #F2F4F3;
+    font-size: 18px;
+    cursor: pointer;
+    width: 165px;
+    height: 40px;
+    background: #320E3B;    
+    border: none;
+    border-radius: 10px;
+}
