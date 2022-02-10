@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { FiUser, FiGitlab } from "react-icons/fi";
 import { getDocs, addDoc, collection } from 'firebase/firestore'
 import db from './services/firebaseConnection';
@@ -58,7 +58,6 @@ export default function App() {
                 const questionIndex = questions.findIndex(item => item.talk === talk);
                 setDialogue(itens => [...itens, talk]);
                 if(!wait){
-                    console.log(questionIndex)
                     if(questionIndex === -1){
                         await addDoc(collection(db, 'questions'), {
                             talk
@@ -90,7 +89,7 @@ export default function App() {
         }
 
         submit()
-    }, [answers, dialogue, questions, talk, wait])
+    }, [answers, questions, talk, wait])
 
     return (
         <div className="app">
