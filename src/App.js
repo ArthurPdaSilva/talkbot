@@ -56,11 +56,6 @@ export default function App() {
         async function submit(){
             if(talk !== ''){
                 const questionIndex = questions.findIndex(item => item.talk === talk);
-                console.log(questions);
-                console.log(answers);
-                console.log(questionIndex)
-                console.log(answers[questionIndex]);
-                console.log(dialogue);
                 setDialogue(itens => [...itens, talk]);
                 if(!wait){
                     console.log(questionIndex)
