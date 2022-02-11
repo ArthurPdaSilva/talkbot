@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import ScrollToBottom from 'react-scroll-to-bottom';
 import { FiUser, FiGitlab } from "react-icons/fi";
-import { getDoc, updateDoc, doc } from 'firebase/firestore'
+import { getDoc, updateDoc, doc } from 'firebase/firestore';
 import db from './services/firebaseConnection';
 import './style.css';
 
@@ -73,7 +74,7 @@ export default function App() {
         <div className="app">
             <h1>Talk Bot</h1>
             <div className="container">
-                <div className="conversation">
+                <ScrollToBottom className="conversation">
                     {dialogue.map((item, index) => (
                         <div className={index % 2 === 0 ? 'talk talkUser' : 'talk'} key={index}>
                             <label>{item}</label>
@@ -83,7 +84,7 @@ export default function App() {
                             }
                         </div>
                     ))}
-                </div>
+                </ScrollToBottom>
                 <div className="sendInformation">
                     <input type="text" value={talk} onChange={(e) => setTalk(e.target.value)}/>
                     <button type='button' onClick={handleDone}> SEND </button>
