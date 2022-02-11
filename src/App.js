@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FiUser, FiGitlab } from "react-icons/fi";
-import { getDocs, addDoc, collection } from 'firebase/firestore'
+import { getDoc, updateDoc, doc } from 'firebase/firestore'
 import db from './services/firebaseConnection';
 import './style.css';
 
@@ -12,82 +12,60 @@ export default function App() {
     const [questions, setQuestions] = useState([]);
 
     useEffect(() => {
-        async function loading(){
-            const response = await getDocs(collection(db, 'answers')).then(snapshot => {
-                const isCollectionEmpty = snapshot.size === 0;
-
-                if(!isCollectionEmpty){
-                    let list = [];
-                    
-                    snapshot.forEach(doc => {
-                        list.push({talk: doc.data().talk});
-                    });
-
-                    setAnswers(list);
-                }
-            })
-        }
-
-        loading()
-    }, [answers]);
-
-    useEffect(() => {
         async function loadingQuestions(){
-            const response = await getDocs(collection(db, 'questions')).then(snapshot => {
-                const isCollectionEmpty = snapshot.size === 0;
-        
-                if(!isCollectionEmpty){
-                    let list = [];
-                    
-                    snapshot.forEach(doc => {
-                        list.push({talk: doc.data().talk});
-                    });
-                    
-                    setQuestions(list);
-                }
+            await getDoc(doc(db, 'questions', 'questionsList')).then(snapshot => {
+                setQuestions(snapshot.data().questions);
             })
 
+            await getDoc(doc(db, 'answers', 'answersList')).then(snapshot => {
+                setAnswers(snapshot.data().answers);
+            })
         }
 
-        loadingQuestions()
+        loadingQuestions();
     }, [questions])
 
     const handleDone = useCallback(() => {
         async function submit(){
             if(talk !== ''){
-                const questionIndex = questions.findIndex(item => item.talk === talk);
+                const questionIndex = questions.indexOf(talk);
                 setDialogue(itens => [...itens, talk]);
                 if(!wait){
                     if(questionIndex === -1){
-                        await addDoc(collection(db, 'questions'), {
-                            talk
+                        let lista = questions;
+                        lista.push(talk);
+                        await updateDoc(doc(db, 'questions', 'questionsList'), {
+                            questions: lista
                         }).then(() => {
                             setDialogue(item => [...item, 'Por favor, me diga como devo responder!']);
                             setWait(true);
                         })
-                        let list = questions;
-                        list.push({talk: talk});
-                        setQuestions(list);
+                        
+                        setQuestions(lista);
+                        console.log(questions);
                     }else{
-                        setDialogue(item => [...item, answers[questionIndex].talk]);
+                        setDialogue(item => [...item, answers[questionIndex]]);
                     }
+
                 }else{
-                    await addDoc(collection(db, 'answers'), {
-                        talk
+                    let lista = answers;
+                    lista.push(talk);
+                    await updateDoc(doc(db, 'answers', 'answersList'), {
+                        answers: lista
                     }).then(() => {
                         setDialogue(itens => [...itens, 'Entendi, salvarei na minha mente!']);
                         setWait(false);
                     })
-                    let list = answers;
-                    list.push({talk: talk});
-                    setAnswers(list);
+
+                    
+                    setAnswers(lista);
+                    console.log(answers);
                 }
                 setTalk('');
             }else{
                 alert('Digite alguma coisa!!!');
             }
         }
-
         submit()
     }, [answers, questions, talk, wait])
 
